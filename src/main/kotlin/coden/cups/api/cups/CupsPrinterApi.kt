@@ -4,9 +4,9 @@ import coden.cups.api.Printer
 import coden.cups.api.PrinterApi
 import org.cups4j.CupsClient
 
-class CupsPrinterApi(host: String, port: Int): PrinterApi {
+class CupsPrinterApi(private val properties: CupsPrinterProperties): PrinterApi {
 
-    private val client = CupsClient(host, port)
+    private val client = CupsClient(properties.host, properties.port)
 
     override fun getPrinters(): List<Printer> {
         return client

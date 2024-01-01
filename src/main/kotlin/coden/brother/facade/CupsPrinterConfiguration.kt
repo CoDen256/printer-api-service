@@ -1,17 +1,19 @@
-package coden.cups.api.cups
+package coden.brother.facade
 
 import coden.cups.api.PrinterApi
+import coden.cups.api.cups.CupsPrinterApi
+import coden.cups.api.cups.CupsPrinterProperties
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@EnableConfigurationProperties(PrinterApiProperties::class)
+@EnableConfigurationProperties(CupsPrinterProperties::class)
+@ConditionalOnProperty("printer.api.cups", matchIfMissing = true)
 class CupsPrinterConfiguration {
     @Bean
-    @ConditionalOnProperty("printer.api", "cups")
-    fun printerApi(properties: PrinterApiProperties): PrinterApi {
-        return CupsPrinterApi(properties.host, properties.port)
+    fun printerApi(properties: CupsPrinterProperties): PrinterApi {
+        return CupsPrinterApi(properties)
     }
 }
