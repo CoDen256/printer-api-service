@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>coden</groupId>
-	<artifactId>brother-api-facade</artifactId>
+	<artifactId>printer-api-facade</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>brother-api-facade</name>
-	<description>brother-api-facade</description>
+	<name>printer-api-facade</name>
+	<description>printer-api-facade</description>
 	<properties>
 		<java.version>21</java.version>
 		<kotlin.version>1.9.21</kotlin.version>
