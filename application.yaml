@@ -1,3 +1,0 @@
-printer.api.cups:
-  host: rpi-beta.local
-  port: 631
