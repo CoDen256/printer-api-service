@@ -23,8 +23,8 @@ class CreateJobHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
         val printerName = ctx.pathParam("name")
         val params = createPrintParams(ctx.queryParamMap())
-        val data = InputStream.nullInputStream();
-        service.createJob(printerName, data, params)
+        val data = ctx.bodyInputStream()
+        ctx.json(service.createJob(printerName, data, params))
     }
 
     private fun createPrintParams(params: Map<String, List<String>>): PrintParams {
@@ -38,7 +38,7 @@ class CreateJobHandler(private val service: PrinterService): Handler {
     }
 }
 
-class TestHandler(): Handler {
+class TestHandler: Handler {
     override fun handle(ctx: Context) {
         ctx.result("" + Random.nextInt() * Random.nextInt(99999, 99999 * 10))
     }

@@ -26,8 +26,8 @@ fun main(args: Array<String>) {
 
     Javalin.create()
         .get("/printers", GetPrintersHandler(api))
-        .get("/printer/{name}", GetPrinterHandler(api))
-        .post("/printer/{name}/job", CreateJobHandler(api))
+        .get("/printers/{name}", GetPrinterHandler(api))
+        .post("/printers/{name}/job", CreateJobHandler(api))
         .get("/test", TestHandler())
         .start(8080)
 }

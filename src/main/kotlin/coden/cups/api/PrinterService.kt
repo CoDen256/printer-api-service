@@ -20,7 +20,7 @@ data class PrintParams(
     val copies: Int
 ) {
     data class Builder(
-        var copies: Int = 0
+        var copies: Int = 1
     ) {
         fun copies(newCopies: Int?) = apply { this.copies = newCopies ?: this.copies }
         fun build() = PrintParams(copies)
