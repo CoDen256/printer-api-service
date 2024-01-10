@@ -30,7 +30,7 @@ lpoptions -d MFCL2710DW
 # 2) Or add manually as in manual of brother
 # http://rpi-beta.local:631/admin/ ->
 # -> Add printer -> LPD/LPR Host or Printer -> lpd://192.168.0.194/binary_p1 (printer ip) ->
-# -> Share -> Make: Brother -> Continue -> Brother MFCL2710DW for CUPS (en) [the driver installed previously]
+# -> Share(!) -> Make: Brother -> Continue -> Brother MFCL2710DW for CUPS (en) [the driver installed previously]
 # remove the one by default
 # lpadmin -x MFCL2710DW
 # lpoptions -d Brother

@@ -1,13 +1,16 @@
 package coden.cups.api
 
-import coden.cups.api.cups.CupsPrinterApi
+import coden.cups.api.cups.CupsPrinterService
 import coden.cups.api.cups.CupsPrinterProperties
-import coden.cups.api.dummy.DummyPrinterApi
+import coden.cups.api.dummy.DummyPrinterService
+import coden.cups.api.handlers.GetPrinterHandler
+import coden.cups.api.handlers.GetPrintersHandler
+import coden.cups.api.handlers.CreateJobHandler
+import coden.cups.api.handlers.TestHandler
 import io.javalin.Javalin
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.util.*
-import kotlin.random.Random
 
 
 class PrinterApiFacadeApplication
@@ -16,22 +19,24 @@ fun main(args: Array<String>) {
     System.setProperty("log4j.configurationFile", "log4j2.xml");
 
     val config = loadProperties()
-    val api: PrinterApi = getPrinterApi(config)
+    val api: PrinterService = loadPrinterService(config)
 
     val log = LoggerFactory.getLogger(PrinterApiFacadeApplication::class.java)
     log.info("Select PrinterApi: ${highlight("{}")}", api.javaClass.simpleName)
 
-    val app = Javalin.create()
-        .get("/printers") { it.json(api.getPrinters()) }
-        .get("/test") { it.result("" + Random.nextInt() * Random.nextInt(99999, 99999 * 10)) }
+    Javalin.create()
+        .get("/printers", GetPrintersHandler(api))
+        .get("/printer/{name}", GetPrinterHandler(api))
+        .post("/printer/{name}/job", CreateJobHandler(api))
+        .get("/test", TestHandler())
         .start(8080)
 }
 
-fun getPrinterApi(config: Properties): PrinterApi {
+fun loadPrinterService(config: Properties): PrinterService {
     return when {
-        config.getProperty("dummy", "false").toBoolean() -> DummyPrinterApi
-        config.containsKey("cups.host") -> CupsPrinterApi(CupsPrinterProperties(config))
-        else -> DummyPrinterApi
+        config.getProperty("dummy", "false").toBoolean() -> DummyPrinterService
+        config.containsKey("cups.host") -> CupsPrinterService(CupsPrinterProperties(config))
+        else -> DummyPrinterService
     }
 }
 
