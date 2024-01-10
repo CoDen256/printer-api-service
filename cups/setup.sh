@@ -2,7 +2,7 @@
 
 
 # https://support.brother.com/g/b/downloadhowto.aspx?c=us_ot&lang=en&prod=mfcl2710dw_us_eu_as&os=128&dlid=dlf103526_000&flang=4&type3=10283
-sudo apt-get update &&  sudo apt-get install -y cups # cups-client cups-bsd cups-filters
+sudo apt-get update &&  sudo apt-get install -y cups  # cups-client cups-bsd cups-filters
 sudo cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.original
 sudo chmod a-w /etc/cups/cupsd.conf.original
 sudo reboot
@@ -54,3 +54,6 @@ sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 # https://blog.tericcabrel.com/springboot-github-actions-ci-cd/
+
+# -----------
+sudo apt-get install libcups2-dev

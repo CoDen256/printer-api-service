@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.1</version>
+		<version>2.3.12.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>coden</groupId>
@@ -14,7 +14,7 @@
 	<name>printer-api-facade</name>
 	<description>printer-api-facade</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>11</java.version>
 		<kotlin.version>1.9.21</kotlin.version>
 	</properties>
 	<dependencies>
