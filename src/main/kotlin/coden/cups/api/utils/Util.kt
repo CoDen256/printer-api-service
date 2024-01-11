@@ -18,3 +18,18 @@ fun loadResourceProperties(filename: String): Properties {
         Properties().apply { load(it) }
     }
 }
+
+fun <T: Any> T.success(): Result<T>{
+    return Result.success(this)
+}
+
+fun <T: Any> failure(e: Throwable = IllegalArgumentException()): Result<T>{
+    return Result.failure(e)
+}
+
+inline fun <R, T> Result<T>.flatMap(transform: (T) -> Result<R>): Result<R> {
+    return fold(
+        {transform(it)},
+        {Result.failure(it)}
+    )
+}

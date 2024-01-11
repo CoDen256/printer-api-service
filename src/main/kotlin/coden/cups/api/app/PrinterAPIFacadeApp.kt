@@ -2,10 +2,7 @@ package coden.cups.api.app
 
 import coden.cups.api.PrinterApiFacadeApplication
 import coden.cups.api.PrinterServiceFactory
-import coden.cups.api.handlers.CreateJobHandler
-import coden.cups.api.handlers.GetPrinterHandler
-import coden.cups.api.handlers.GetPrintersHandler
-import coden.cups.api.handlers.TestHandler
+import coden.cups.api.handlers.*
 import coden.cups.api.utils.highlight
 import io.javalin.Javalin
 import org.slf4j.LoggerFactory
@@ -27,7 +24,9 @@ class PrinterAPIFacadeApp(config: Properties, factory: PrinterServiceFactory) {
     private fun createEndpoints() = app.apply {
         get("/printers", GetPrintersHandler(service))
         get("/printers/{name}", GetPrinterHandler(service))
-        post("/printers/{name}/job", CreateJobHandler(service))
+        post("/printers/{name}/jobs", CreateJobHandler(service))
+        get("/printers/{name}/jobs", GetJobsHandler(service))
+        get("/printers/{name}/jobs/{id}", GetJobHandler(service))
         get("/test", TestHandler())
     }
 

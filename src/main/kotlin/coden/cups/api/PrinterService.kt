@@ -3,9 +3,11 @@ package coden.cups.api
 import java.io.InputStream
 
 interface PrinterService {
-    fun getPrinters(): List<Printer>
-    fun getPrinter(name: String): Printer
-    fun createJob(printerName: String, data: InputStream, params: PrintParams=PrintParams.Builder().build()): PrintJob
+    fun getPrinters(): Result<List<Printer>>
+    fun getPrinter(name: String): Result<Printer>
+    fun createJob(printerName: String, data: InputStream, params: PrintParams=PrintParams.Builder().build()): Result<PrintJob>
+    fun getJobs(printerName: String): Result<List<PrintJob>>
+    fun getJob(id: Int): Result<PrintJob>
 }
 
 data class Printer(
@@ -32,6 +34,8 @@ data class PrintParams(
 
 data class PrintJob(
     val id: Int,
+    val name: String,
     val message: String,
-    val success: Boolean
+    val success: Boolean,
+    val state: String? = null
 )

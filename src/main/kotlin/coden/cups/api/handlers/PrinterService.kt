@@ -8,22 +8,36 @@ import kotlin.random.Random
 
 class GetPrintersHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
-        ctx.json(service.getPrinters())
+        service.getPrinters()
+            .onFailure { ctx.status(500).json("{\"error\": ${it.message}}") }
+            .onSuccess { ctx.json(it) }
     }
 }
 
 class GetPrinterHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
-        ctx.json(service.getPrinter(ctx.pathParam("name")))
+        val name = runCatching {  ctx.pathParam("name") }
+            .onFailure { ctx.status(400).json(InvalidPrinterName()) }
+            .getOrNull() ?: return
+
+
+        service.getPrinter(name)
+            .onFailure { ctx.status(404).json(PrinterNotFoundError(name)) }
+            .onSuccess { ctx.json(it) }
     }
 }
 
 class CreateJobHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
-        val printerName = ctx.pathParam("name")
+        val name = runCatching {  ctx.pathParam("name") }
+            .onFailure { ctx.status(400).json(InvalidPrinterName()) }
+            .getOrNull() ?: return
         val params = createPrintParams(ctx.queryParamMap())
         val data = ctx.bodyInputStream()
-        ctx.json(service.createJob(printerName, data, params))
+
+        service.createJob(name, data, params)
+            .onFailure { ctx.status(404).json(PrinterNotFoundError(name)) }
+            .onSuccess { ctx.json(it) }
     }
 
     private fun createPrintParams(params: Map<String, List<String>>): PrintParams {
@@ -37,9 +51,38 @@ class CreateJobHandler(private val service: PrinterService): Handler {
     }
 }
 
+class GetJobsHandler(private val service: PrinterService): Handler {
+    override fun handle(ctx: Context) {
+        val name = runCatching {  ctx.pathParam("name") }
+            .onFailure { ctx.status(400).json(InvalidPrinterName()) }
+            .getOrNull() ?: return
+
+        service.getJobs(name)
+            .onFailure { ctx.status(404).json(PrinterNotFoundError(name)) }
+            .onSuccess { ctx.json(it) }
+    }
+}
+
+class GetJobHandler(private val service: PrinterService): Handler {
+    override fun handle(ctx: Context) {
+        val id = runCatching {  ctx.pathParam("id").toInt() }
+            .onFailure { ctx.status(400).json(InvalidJobId()) }
+            .getOrNull() ?: return
+
+
+        service.getJob(id)
+            .onFailure { ctx.status(404).json(JobNotFoundError(id)) }
+            .onSuccess { ctx.json(it) }
+    }
+}
+
 class TestHandler: Handler {
     override fun handle(ctx: Context) {
         ctx.result("" + Random.nextInt() * Random.nextInt(99999, 99999 * 10))
     }
-
 }
+
+data class JobNotFoundError(val id: Int, val message: String = "Job <$id> does not exist")
+data class PrinterNotFoundError(val name: String, val message: String = "Printer <$name> does not exist")
+data class InvalidJobId(val message: String = "Invalid Job ID, should be int")
+data class InvalidPrinterName(val message: String = "Invalid Printer Name")
