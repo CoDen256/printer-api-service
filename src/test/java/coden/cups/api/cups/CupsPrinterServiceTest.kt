@@ -34,7 +34,7 @@ class CupsPrinterServiceTest {
     @Test
     fun createJobPDF() {
         val file = File("test.pdf")
-        val r = service.createJob("PDF", FileInputStream(file), PrintParams.Builder().name("test").build())
+        val r = service.createJob("PDF", FileInputStream(file), PrintParams.Builder().name("test").build()).getOrThrow()
         println(r.message)
         println(r.success)
         println(r.id)

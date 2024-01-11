@@ -36,7 +36,7 @@ object DummyPrinterService : PrinterService {
         return jobs.success()
     }
 
-    override fun getJob(id: Int): Result<PrintJob> {
+    override fun getJob(printerName: String, id: Int): Result<PrintJob> {
         return jobs.getOrNull(id)?.success() ?: failure()
     }
 }

@@ -7,7 +7,7 @@ interface PrinterService {
     fun getPrinter(name: String): Result<Printer>
     fun createJob(printerName: String, data: InputStream, params: PrintParams=PrintParams.Builder().build()): Result<PrintJob>
     fun getJobs(printerName: String): Result<List<PrintJob>>
-    fun getJob(id: Int): Result<PrintJob>
+    fun getJob(printerName: String, id: Int): Result<PrintJob>
 }
 
 data class Printer(

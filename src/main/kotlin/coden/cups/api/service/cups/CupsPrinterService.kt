@@ -59,9 +59,9 @@ class CupsPrinterService(properties: CupsPrinterProperties): PrinterService {
             .success()
     }
 
-    override fun getJob(id: Int): Result<PrintJob> {
-         return runCatching { client.getJobAttributes(id)}
-             .map { mapPrintJob(it) }
+    override fun getJob(printerName: String, id: Int): Result<PrintJob> {
+         return getJobs(printerName)
+             .mapCatching { jobs -> jobs.first { job -> job.id == id } }
     }
 
     private fun mapPrintJob(attributes: PrintJobAttributes): PrintJob{

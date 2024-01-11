@@ -65,12 +65,16 @@ class GetJobsHandler(private val service: PrinterService): Handler {
 
 class GetJobHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
+        val name = runCatching {  ctx.pathParam("name") }
+            .onFailure { ctx.status(400).json(InvalidPrinterName()) }
+            .getOrNull() ?: return
+
         val id = runCatching {  ctx.pathParam("id").toInt() }
             .onFailure { ctx.status(400).json(InvalidJobId()) }
             .getOrNull() ?: return
 
 
-        service.getJob(id)
+        service.getJob(name, id)
             .onFailure { ctx.status(404).json(JobNotFoundError(id)) }
             .onSuccess { ctx.json(it) }
     }
