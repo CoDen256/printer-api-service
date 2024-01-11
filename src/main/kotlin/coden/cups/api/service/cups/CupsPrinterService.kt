@@ -7,6 +7,8 @@ import org.cups4j.CupsClient
 import org.cups4j.CupsPrinter
 import java.io.InputStream
 
+private const val USERNAME = "coden"
+
 class CupsPrinterService(properties: CupsPrinterProperties): PrinterService {
 
     private val client = CupsClient(properties.host, properties.port)
@@ -28,11 +30,13 @@ class CupsPrinterService(properties: CupsPrinterProperties): PrinterService {
     override fun createJob(printerName: String, data: InputStream, params: PrintParams): coden.cups.api.PrintJob {
         val printer = client.getPrinter(printerName)
         val job = org.cups4j.PrintJob.Builder(data)
+            .jobName(params.name)
+            .userName(USERNAME)
             .copies(params.copies)
             .pageFormat("iso-a4")
             .attributes(attributes)
             .build();
         val result = printer.print(job)
-        return coden.cups.api.PrintJob(result.jobId)
+        return coden.cups.api.PrintJob(result.jobId, result.resultDescription, result.isSuccessfulResult)
     }
 }

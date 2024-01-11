@@ -24,6 +24,6 @@ object DummyPrinterService : PrinterService {
         FileOutputStream("dummy.pdf").use {
             it.write(data.readAllBytes())
         }
-        return PrintJob(0)
+        return PrintJob(0, "successful", true)
     }
 }

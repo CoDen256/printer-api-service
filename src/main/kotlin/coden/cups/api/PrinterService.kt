@@ -17,16 +17,21 @@ data class Printer(
 )
 
 data class PrintParams(
-    val copies: Int
+    val copies: Int,
+    val name: String
 ) {
     data class Builder(
-        var copies: Int = 1
+        var copies: Int = 1,
+        var name: String = "job"
     ) {
         fun copies(newCopies: Int?) = apply { this.copies = newCopies ?: this.copies }
-        fun build() = PrintParams(copies)
+        fun name(newName: String?) = apply { this.name = newName ?: this.name }
+        fun build() = PrintParams(copies, name)
     }
 }
 
 data class PrintJob(
-    val id: Int
+    val id: Int,
+    val message: String,
+    val success: Boolean
 )
