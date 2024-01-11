@@ -4,7 +4,9 @@ import coden.cups.api.PrintParams
 import coden.cups.api.PrinterService
 import io.javalin.http.Context
 import io.javalin.http.Handler
+import org.slf4j.LoggerFactory
 import kotlin.random.Random
+
 
 class GetPrintersHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
@@ -16,6 +18,7 @@ class GetPrintersHandler(private val service: PrinterService): Handler {
 
 class GetPrinterHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
+
         val name = runCatching {  ctx.pathParam("name") }
             .onFailure { ctx.status(400).json(InvalidPrinterName()) }
             .getOrNull() ?: return
@@ -29,6 +32,7 @@ class GetPrinterHandler(private val service: PrinterService): Handler {
 
 class CreateJobHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
+
         val name = runCatching {  ctx.pathParam("name") }
             .onFailure { ctx.status(400).json(InvalidPrinterName()) }
             .getOrNull() ?: return
@@ -53,6 +57,7 @@ class CreateJobHandler(private val service: PrinterService): Handler {
 
 class GetJobsHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
+
         val name = runCatching {  ctx.pathParam("name") }
             .onFailure { ctx.status(400).json(InvalidPrinterName()) }
             .getOrNull() ?: return
@@ -65,6 +70,7 @@ class GetJobsHandler(private val service: PrinterService): Handler {
 
 class GetJobHandler(private val service: PrinterService): Handler {
     override fun handle(ctx: Context) {
+
         val name = runCatching {  ctx.pathParam("name") }
             .onFailure { ctx.status(400).json(InvalidPrinterName()) }
             .getOrNull() ?: return
@@ -82,7 +88,18 @@ class GetJobHandler(private val service: PrinterService): Handler {
 
 class TestHandler: Handler {
     override fun handle(ctx: Context) {
+
         ctx.result("" + Random.nextInt() * Random.nextInt(99999, 99999 * 10))
+    }
+}
+
+
+object LoggingPreprocessor: Handler {
+    private val log = LoggerFactory.getLogger(LoggingPreprocessor::class.java)
+
+    override fun handle(ctx: Context) {
+        log.info("${ctx.method()} ${ctx.path()} + ${ctx.bodyAsBytes().size} bytes -> ${ctx.res().status}: ${ctx.result()}")
+
     }
 }
 

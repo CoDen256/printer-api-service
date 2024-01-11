@@ -22,6 +22,7 @@ class PrinterAPIFacadeApp(config: Properties, factory: PrinterServiceFactory) {
     }
 
     private fun createEndpoints() = app.apply {
+        after(LoggingPreprocessor)
         get("/printers", GetPrintersHandler(service))
         get("/printers/{name}", GetPrinterHandler(service))
         post("/printers/{name}/jobs", CreateJobHandler(service))
