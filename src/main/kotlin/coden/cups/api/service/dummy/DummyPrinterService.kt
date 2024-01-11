@@ -1,4 +1,4 @@
-package coden.cups.api.dummy
+package coden.cups.api.service.dummy
 
 import coden.cups.api.PrintJob
 import coden.cups.api.PrintParams

@@ -4,7 +4,6 @@ import coden.cups.api.PrintParams
 import coden.cups.api.PrinterService
 import io.javalin.http.Context
 import io.javalin.http.Handler
-import java.io.InputStream
 import kotlin.random.Random
 
 class GetPrintersHandler(private val service: PrinterService): Handler {
