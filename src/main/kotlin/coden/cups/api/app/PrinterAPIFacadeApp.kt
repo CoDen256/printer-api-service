@@ -16,7 +16,6 @@ class PrinterAPIFacadeApp(config: Properties, factory: PrinterServiceFactory) {
 
     init {
         val log = LoggerFactory.getLogger(PrinterApiFacadeApplication::class.java)
-        println(service.javaClass.simpleName)
         log.info("Select PrinterApi: ${highlight("{}")}", service.javaClass.simpleName)
         createEndpoints()
     }
